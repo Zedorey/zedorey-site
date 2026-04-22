@@ -578,6 +578,7 @@
           data: {
             type: 'subscription',
             attributes: {
+              custom_source: 'Gate Page',
               profile: {
                 data: {
                   type: 'profile',
@@ -596,19 +597,22 @@
         const res = await fetch('https://a.klaviyo.com/client/subscriptions/?company_id=' + GATE_CONFIG.klaviyoPublicKey, {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json',
-            'revision': '2023-12-15'
+            'Content-Type': 'application/vnd.api+json',
+            'revision': '2024-10-15'
           },
           body: JSON.stringify(payload)
         });
 
-        if (res.ok || res.status === 202) {
+        if (res.status === 202 || res.ok) {
           document.getElementById('signupForm').style.display = 'none';
           document.getElementById('signupSuccess').style.display = 'block';
         } else {
+          const body = await res.text();
+          console.error('Klaviyo error:', res.status, body);
           throw new Error('Signup failed');
         }
       } catch (err) {
+        console.error('Signup error:', err);
         error.textContent = 'Something went wrong. Try again.';
         error.style.display = 'block';
         btn.classList.remove('loading');
