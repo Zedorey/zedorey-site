@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zedorey — Set Apart</title>
+  <meta name="description" content="Premium streetwear built on biblical values. Limited drops. No restocks. Set apart." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    /* ── RESET & TOKENS ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black:       #080808;
+      --black-mid:   #0e0e0e;
+      --grey-dark:   #1a1a1a;
+      --grey-mid:    #2a2a2a;   /* brand: #2a2a2a */
+      --grey:        #8a8f98;   /* brand: #8a8f98 — steel grey */
+      --grey-light:  #8a8f98;
+      --grey-muted:  #8a7f73;   /* brand: #8a7f73 — warm mid */
+      --warm-grey:   #8a7f73;
+      --bone:        #b7b1a5;   /* brand: #b7b1a5 — bone */
+      --white:       #f0ece6;
+      --brown:       #5c4033;   /* brand: #5c4033 — deep brown */
+      --accent:      #b7b1a5;
+      --accent-dim:  #8a7f73;
+
+      --font-display: 'Cormorant Garamond', Georgia, serif;
+      --font-ui:      'Bebas Neue', sans-serif;
+      --font-body:    'DM Sans', sans-serif;
+
+      --ease: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    html, body {
+      height: 100%;
+      background: var(--black);
+      color: var(--white);
+      font-family: var(--font-body);
+      overflow: hidden;
+    }
+
+    /* ── GRAIN OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      opacity: 0.03;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-size: 200px;
+      pointer-events: none;
+      z-index: 100;
+    }
+
+    /* ── HERO BG ── */
+    .gate-bg {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+    }
+
+    .gate-bg-img {
+      position: absolute;
+      inset: 0;
+      background-image: url('images/baldwin.png');
+      background-size: cover;
+      background-position: center 15%;
+      opacity: 0.18;
+      filter: grayscale(100%) contrast(1.4);
+    }
+
+    .gate-bg-overlay {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse at 60% 30%, rgba(92,64,51,0.12) 0%, transparent 60%),
+        linear-gradient(180deg, rgba(8,8,8,0.4) 0%, rgba(8,8,8,0.95) 100%);
+    }
+
+    /* ── LAYOUT ── */
+    .gate-wrap {
+      position: relative;
+      z-index: 10;
+      min-height: 100vh;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      padding: 0 40px;
+    }
+
+    /* ── TOP BAR ── */
+    .gate-top {
+      padding: 32px 0 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      opacity: 0;
+      animation: fadeUp 0.8s var(--ease) 0.1s forwards;
+    }
+
+    .gate-logo {
+      font-family: var(--font-ui);
+      font-size: 28px;
+      letter-spacing: 0.12em;
+      color: var(--bone);
+      text-decoration: none;
+    }
+
+    .gate-label {
+      font-family: var(--font-body);
+      font-size: 10px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--grey-muted);
+      padding-top: 6px;
+    }
+
+    /* ── MAIN ── */
+    .gate-main {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 60px 0;
+      gap: 0;
+    }
+
+    .gate-eyebrow {
+      font-family: var(--font-body);
+      font-size: 10px;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--brown);
+      margin-bottom: 28px;
+      opacity: 0;
+      animation: fadeUp 0.8s var(--ease) 0.2s forwards;
+    }
+
+    .gate-headline {
+      font-family: var(--font-display);
+      font-size: clamp(52px, 9vw, 120px);
+      font-weight: 400;
+      font-style: italic;
+      line-height: 0.95;
+      color: var(--bone);
+      margin-bottom: 20px;
+      opacity: 0;
+      animation: fadeUp 0.9s var(--ease) 0.3s forwards;
+    }
+
+    .gate-subhead {
+      font-family: var(--font-ui);
+      font-size: clamp(36px, 5vw, 64px);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(183,177,165,0.18);
+      margin-bottom: 48px;
+      opacity: 0;
+      animation: fadeUp 0.9s var(--ease) 0.4s forwards;
+    }
+
+    .gate-verse {
+      font-family: var(--font-body);
+      font-size: 10px;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--accent-dim);
+      margin-bottom: 64px;
+      opacity: 0;
+      animation: fadeUp 0.8s var(--ease) 0.5s forwards;
+    }
+
+    /* ── DIVIDER ── */
+    .gate-divider {
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, transparent, var(--grey-mid), transparent);
+      margin: 0 auto 64px;
+      opacity: 0;
+      animation: fadeUp 0.8s var(--ease) 0.55s forwards;
+    }
+
+    /* ── TABS ── */
+    .gate-tabs {
+      display: flex;
+      gap: 0;
+      border-bottom: 1px solid var(--grey-dark);
+      margin-bottom: 40px;
+      opacity: 0;
+      animation: fadeUp 0.8s var(--ease) 0.6s forwards;
+    }
+
+    .gate-tab {
+      padding: 12px 28px;
+      font-family: var(--font-body);
+      font-size: 10px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--grey-muted);
+      cursor: pointer;
+      border-bottom: 1px solid transparent;
+      margin-bottom: -1px;
+      transition: color 0.2s, border-color 0.2s;
+      background: none;
+      border-left: none;
+      border-right: none;
+      border-top: none;
+    }
+
+    .gate-tab:hover { color: var(--white); }
+    .gate-tab.active { color: var(--white); border-bottom-color: #b7b1a5; }
+
+    /* ── PANELS ── */
+    .gate-panel {
+      display: none;
+      width: 100%;
+      max-width: 420px;
+    }
+    .gate-panel.active { display: block; }
+
+    /* ── SIGNUP FORM ── */
+    .gate-form-wrap {
+      opacity: 0;
+      animation: fadeUp 0.8s var(--ease) 0.7s forwards;
+    }
+
+    .gate-form-label {
+      font-family: var(--font-body);
+      font-size: 13px;
+      color: var(--grey-light);
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+
+    .gate-form {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .gate-input {
+      width: 100%;
+      padding: 15px 20px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(183,177,165,0.15);
+      color: var(--white);
+      font-family: var(--font-body);
+      font-size: 13px;
+      outline: none;
+      transition: border-color 0.2s, background 0.2s;
+      -webkit-appearance: none;
+    }
+
+    .gate-input::placeholder { color: var(--grey-muted); }
+    .gate-input:focus {
+      border-color: rgba(183,177,165,0.4);
+      background: rgba(255,255,255,0.05);
+    }
+
+    .gate-btn {
+      width: 100%;
+      padding: 15px 28px;
+      background: var(--bone);
+      color: var(--black);
+      font-family: var(--font-body);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      cursor: pointer;
+      border: none;
+      transition: background 0.2s, color 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .gate-btn:hover { background: var(--white); }
+    .gate-btn:active { transform: scale(0.99); }
+
+    .gate-btn.loading { opacity: 0.7; pointer-events: none; }
+
+    .gate-success {
+      display: none;
+      padding: 20px;
+      border: 1px solid rgba(183,177,165,0.2);
+      background: rgba(183,177,165,0.04);
+      text-align: center;
+    }
+
+    .gate-success-icon {
+      font-size: 18px;
+      color: var(--accent);
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .gate-success p {
+      font-size: 12px;
+      color: var(--grey-light);
+      line-height: 1.7;
+      letter-spacing: 0.05em;
+    }
+
+    .gate-success strong {
+      color: var(--bone);
+      font-weight: 400;
+    }
+
+    .gate-error, .gate-pw-error {
+      font-size: 11px;
+      color: #a0624a;
+      letter-spacing: 0.08em;
+      margin-top: 8px;
+      display: none;
+    }
+
+    /* ── PASSWORD PANEL ── */
+    .gate-pw-label {
+      font-family: var(--font-body);
+      font-size: 13px;
+      color: var(--grey-light);
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+
+    .gate-pw-form {
+      display: flex;
+      gap: 0;
+    }
+
+    .gate-pw-input {
+      flex: 1;
+      padding: 15px 20px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(183,177,165,0.15);
+      border-right: none;
+      color: var(--white);
+      font-family: var(--font-body);
+      font-size: 13px;
+      outline: none;
+      transition: border-color 0.2s;
+      -webkit-appearance: none;
+    }
+
+    .gate-pw-input::placeholder { color: var(--grey-muted); }
+    .gate-pw-input:focus { border-color: rgba(183,177,165,0.4); }
+
+    .gate-pw-btn {
+      padding: 15px 24px;
+      background: var(--bone);
+      color: var(--black);
+      font-family: var(--font-body);
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      cursor: pointer;
+      border: none;
+      transition: background 0.2s;
+      flex-shrink: 0;
+    }
+
+    .gate-pw-btn:hover { background: var(--white); }
+
+    .gate-pw-error {
+      font-size: 11px;
+      color: #c0826a;
+      letter-spacing: 0.08em;
+      margin-top: 10px;
+      display: none;
+    }
+
+    /* ── FOOTER ── */
+    .gate-bottom {
+      padding: 0 0 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      opacity: 0;
+      animation: fadeUp 0.8s var(--ease) 0.9s forwards;
+    }
+
+    .gate-bottom-copy {
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      color: var(--grey-muted);
+    }
+
+    .gate-bottom-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    .gate-bottom-link {
+      font-size: 10px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--grey-muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .gate-bottom-link:hover { color: var(--bone); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── MOBILE ── */
+    @media (max-width: 600px) {
+      .gate-wrap { padding: 0 24px; }
+      .gate-top { padding: 24px 0 0; }
+      .gate-bottom { flex-direction: column; gap: 16px; align-items: flex-start; }
+      .gate-headline { font-size: clamp(44px, 12vw, 80px); }
+      .gate-tab { padding: 12px 18px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="gate-bg">
+    <div class="gate-bg-img"></div>
+    <div class="gate-bg-overlay"></div>
+  </div>
+
+  <div class="gate-wrap">
+
+    <!-- TOP -->
+    <div class="gate-top">
+      <a href="#" class="gate-logo">Zedorey</a>
+      <span class="gate-label">Set Apart Vol. I — Coming Soon</span>
+    </div>
+
+    <!-- MAIN -->
+    <main class="gate-main">
+
+      <span class="gate-eyebrow">First Edition — Limited Drop</span>
+
+      <h1 class="gate-headline">Set Apart</h1>
+
+      <p class="gate-subhead">Vol. I — 2026</p>
+
+      <p class="gate-verse">II Cor XII IX</p>
+
+      <div class="gate-divider"></div>
+
+      <!-- TABS -->
+      <div class="gate-tabs">
+        <button class="gate-tab active" data-tab="signup">Join The Drop List</button>
+        <button class="gate-tab" data-tab="password">I Have A Password</button>
+      </div>
+
+      <!-- SIGNUP PANEL -->
+      <div class="gate-panel active" id="panel-signup">
+        <div class="gate-form-wrap">
+          <p class="gate-form-label">
+            Be first to know when Set Apart Vol. I drops.<br>Limited quantity. No restocks.
+          </p>
+          <div class="gate-form" id="signupForm">
+            <input
+              class="gate-input"
+              type="email"
+              id="emailInput"
+              placeholder="Your email address"
+              autocomplete="email"
+              required
+            />
+            <button class="gate-btn" id="signupBtn" type="button">
+              Join The Drop List
+            </button>
+            <span class="gate-error" id="signupError"></span>
+          </div>
+          <div class="gate-success" id="signupSuccess">
+            <span class="gate-success-icon">✝︎</span>
+            <p>You're in. <strong>Watch your inbox.</strong><br>When the password drops, you'll be first to know.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- PASSWORD PANEL -->
+      <div class="gate-panel" id="panel-password">
+        <div class="gate-form-wrap">
+          <p class="gate-pw-label">
+            Enter your early access password to enter the store.
+          </p>
+          <div class="gate-pw-form">
+            <input
+              class="gate-pw-input"
+              type="password"
+              id="pwInput"
+              placeholder="Password"
+              autocomplete="current-password"
+            />
+            <button class="gate-pw-btn" id="pwBtn" type="button">Enter</button>
+          </div>
+          <span class="gate-pw-error" id="pwError">Incorrect password.</span>
+        </div>
+      </div>
+
+    </main>
+
+    <!-- BOTTOM -->
+    <div class="gate-bottom">
+      <span class="gate-bottom-copy">© 2026 Zedorey. All rights reserved.</span>
+      <nav class="gate-bottom-links">
+        <a href="mailto:hello@zedorey.com" class="gate-bottom-link">Contact</a>
+        <a href="https://instagram.com/zedoreystore" class="gate-bottom-link" target="_blank" rel="noopener">Instagram</a>
+      </nav>
+    </div>
+
+  </div>
+
+  <script>
+    // ─────────────────────────────────────────
+    // CONFIG — fill these in before going live
+    // ─────────────────────────────────────────
+    const GATE_CONFIG = {
+      // Paste your Klaviyo Public API Key here
+      // Found in Klaviyo → Settings → API Keys → Public API Key
+      klaviyoPublicKey: 'XBWHUN',
+
+      // Klaviyo List ID
+      klaviyoListId: 'TtSEyN',
+
+      // Set your early access password here
+      // Change this whenever you want
+      password: 'setapart2026',
+
+      // Where to redirect after correct password
+      // Change this to 'index.html' or '/' depending on your host
+      redirectUrl: 'index.html'
+    };
+
+    // ─────────────────────────────────────────
+    // TABS
+    // ─────────────────────────────────────────
+    document.querySelectorAll('.gate-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.gate-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.gate-panel').forEach(p => p.classList.remove('active'));
+        tab.classList.add('active');
+        document.getElementById(`panel-${tab.dataset.tab}`).classList.add('active');
+      });
+    });
+
+    // ─────────────────────────────────────────
+    // EMAIL SIGNUP — Klaviyo
+    // ─────────────────────────────────────────
+    document.getElementById('signupBtn').addEventListener('click', async () => {
+      const email = document.getElementById('emailInput').value.trim();
+      const btn   = document.getElementById('signupBtn');
+      const error = document.getElementById('signupError');
+
+      error.style.display = 'none';
+
+      if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        error.textContent = 'Please enter a valid email address.';
+        error.style.display = 'block';
+        return;
+      }
+
+      if (GATE_CONFIG.klaviyoPublicKey === 'YOUR_KLAVIYO_PUBLIC_KEY') {
+        // Dev mode — just show success without actually calling Klaviyo
+        document.getElementById('signupForm').style.display = 'none';
+        document.getElementById('signupSuccess').style.display = 'block';
+        return;
+      }
+
+      btn.classList.add('loading');
+      btn.textContent = 'Joining...';
+
+      try {
+        const payload = {
+          data: {
+            type: 'subscription',
+            attributes: {
+              profile: {
+                data: {
+                  type: 'profile',
+                  attributes: { email }
+                }
+              }
+            },
+            relationships: {
+              list: {
+                data: { type: 'list', id: GATE_CONFIG.klaviyoListId }
+              }
+            }
+          }
+        };
+
+        const res = await fetch('https://a.klaviyo.com/client/subscriptions/?company_id=' + GATE_CONFIG.klaviyoPublicKey, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'revision': '2023-12-15'
+          },
+          body: JSON.stringify(payload)
+        });
+
+        if (res.ok || res.status === 202) {
+          document.getElementById('signupForm').style.display = 'none';
+          document.getElementById('signupSuccess').style.display = 'block';
+        } else {
+          throw new Error('Signup failed');
+        }
+      } catch (err) {
+        error.textContent = 'Something went wrong. Try again.';
+        error.style.display = 'block';
+        btn.classList.remove('loading');
+        btn.textContent = 'Join The Drop List';
+      }
+    });
+
+    // Enter key on email input
+    document.getElementById('emailInput').addEventListener('keydown', e => {
+      if (e.key === 'Enter') document.getElementById('signupBtn').click();
+    });
+
+    // ─────────────────────────────────────────
+    // PASSWORD
+    // ─────────────────────────────────────────
+    function checkPassword() {
+      const val   = document.getElementById('pwInput').value;
+      const error = document.getElementById('pwError');
+
+      if (val === GATE_CONFIG.password) {
+        // Store access in session so gate doesn't show again on refresh
+        sessionStorage.setItem('zedorey_access', 'granted');
+        window.location.href = GATE_CONFIG.redirectUrl;
+      } else {
+        error.style.display = 'block';
+        document.getElementById('pwInput').value = '';
+        document.getElementById('pwInput').focus();
+        setTimeout(() => { error.style.display = 'none'; }, 3000);
+      }
+    }
+
+    document.getElementById('pwBtn').addEventListener('click', checkPassword);
+    document.getElementById('pwInput').addEventListener('keydown', e => {
+      if (e.key === 'Enter') checkPassword();
+    });
+
+    // ─────────────────────────────────────────
+    // ACCESS CHECK
+    // If they already entered the password this session, skip gate
+    // ─────────────────────────────────────────
+    if (sessionStorage.getItem('zedorey_access') === 'granted') {
+      window.location.href = GATE_CONFIG.redirectUrl;
+    }
+  </script>
+
+</body>
+</html>
