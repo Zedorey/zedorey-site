@@ -6,6 +6,11 @@
   <title>Product - Zedorey</title>
   <link rel="stylesheet" href="../css/global.css" />
   <link rel="stylesheet" href="../css/product.css" />
+  <script>
+    if (sessionStorage.getItem('zedorey_access') !== 'granted') {
+      window.location.replace('../gate.html');
+    }
+  </script>
 </head>
 <body>
 
