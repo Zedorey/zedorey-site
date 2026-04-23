@@ -25,16 +25,22 @@ async function loadProduct() {
     return;
   }
 
-  document.title = `${product.title} - Zedorey`;
+  const isEssential = product.collection === 'essentials' || product.tags?.includes('essentials');
+  const displayTitle = isEssential ? 'ZDRY Essentials' : product.title;
+  const displayDesc = isEssential ? 'Part of the ZDRY Essentials line. Revealed in time.' : (product.description || '');
+  const displaySpecs = isEssential ? null : product.specs;
+  const placeholderLabel = isEssential ? 'Revealed Soon' : 'Designs Not Yet Revealed';
+
+  document.title = `${displayTitle} - Zedorey`;
 
   // Static product (no token)
   main.innerHTML = `
     <div class="product-layout">
       <div class="product-images">
         <div class="product-images-track">
-          <div class="product-image-item" style="background:var(--grey-dark);display:flex;align-items:center;justify-content:center;">
+          <div class="product-image-item ${isEssential ? 'locked-image-item' : ''}" style="background:var(--grey-dark);display:flex;align-items:center;justify-content:center;">
             <div style="text-align:center;">
-              <p style="font-family:var(--font-ui);font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:var(--grey-muted)">Designs Not Yet Revealed</p>
+              <p style="font-family:var(--font-ui);font-size:10px;letter-spacing:0.25em;text-transform:uppercase;color:var(--grey-muted)">${placeholderLabel}</p>
             </div>
           </div>
         </div>
@@ -44,10 +50,10 @@ async function loadProduct() {
         <div class="product-breadcrumb">
           <a href="products.html">Products</a>
           <span>→</span>
-          <span style="color:var(--grey-muted)">${product.title}</span>
+          <span style="color:var(--grey-muted)">${displayTitle}</span>
         </div>
 
-        <h1 class="product-title">${product.title}</h1>
+        <h1 class="product-title">${displayTitle}</h1>
 
         <div class="product-price coming-soon">Coming Soon</div>
 
@@ -63,22 +69,22 @@ async function loadProduct() {
         <div class="product-divider"></div>
 
         <div class="product-description">
-          <p>${product.description || ''}</p>
+          <p>${displayDesc}</p>
         </div>
 
         <div class="product-details">
-          ${product.specs ? `
+          ${displaySpecs ? `
           <div class="product-detail-row">
             <span class="detail-key">Specs</span>
-            <span class="detail-val">${product.specs}</span>
+            <span class="detail-val">${displaySpecs}</span>
           </div>` : ''}
           <div class="product-detail-row">
             <span class="detail-key">Availability</span>
-            <span class="detail-val">Limited. No restocks.</span>
+            <span class="detail-val">${isEssential ? 'Always stocked once revealed.' : 'Limited. No restocks.'}</span>
           </div>
           <div class="product-detail-row">
-            <span class="detail-key">Drop</span>
-            <span class="detail-val">June 2026</span>
+            <span class="detail-key">${isEssential ? 'Reveal' : 'Drop'}</span>
+            <span class="detail-val">${isEssential ? 'After Vol. I' : 'June 2026'}</span>
           </div>
         </div>
 

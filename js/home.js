@@ -36,12 +36,12 @@ async function loadProducts() {
   );
 
   grid.innerHTML = essentials.map(product => `
-    <a href="pages/product.html?handle=${product.handle}" class="product-card">
-      <div class="product-img" style="background:var(--grey-dark)"></div>
+    <a href="pages/product.html?handle=${product.handle}" class="product-card locked-card">
+      <div class="product-img locked-img"></div>
       <div class="product-badge"><span class="badge-coming">Coming Soon</span></div>
       <div class="product-card-overlay">
-        <div class="product-card-name">${product.title}</div>
-        <div class="product-card-price">Coming Soon</div>
+        <div class="product-card-name">ZDRY Essentials</div>
+        <div class="product-card-price">Revealed Soon</div>
       </div>
     </a>`).join('');
 }

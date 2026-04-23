@@ -18,15 +18,22 @@ function renderProducts(products) {
     grid.innerHTML = `<div class="products-empty">No products found</div>`;
     return;
   }
-  grid.innerHTML = products.map(product => `
-    <a href="product.html?handle=${product.handle}" class="product-card fade-in">
-      <div class="product-img" style="background:var(--grey-dark)"></div>
+  grid.innerHTML = products.map(product => {
+    const isEssential = product.collection === 'essentials' || product.tags?.includes('essentials');
+    const cardName = isEssential ? 'ZDRY Essentials' : product.title;
+    const cardPrice = isEssential ? 'Revealed Soon' : 'Coming Soon';
+    const lockedClass = isEssential ? ' locked-card' : '';
+    const imgClass = isEssential ? 'product-img locked-img' : 'product-img';
+    return `
+    <a href="product.html?handle=${product.handle}" class="product-card fade-in${lockedClass}">
+      <div class="${imgClass}"></div>
       <div class="product-badge"><span class="badge-coming">Coming Soon</span></div>
       <div class="product-card-overlay">
-        <div class="product-card-name">${product.title}</div>
-        <div class="product-card-price">Coming Soon</div>
+        <div class="product-card-name">${cardName}</div>
+        <div class="product-card-price">${cardPrice}</div>
       </div>
-    </a>`).join('');
+    </a>`;
+  }).join('');
 
   requestAnimationFrame(() => {
     document.querySelectorAll('.product-card.fade-in').forEach((el, i) => {
