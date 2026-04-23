@@ -408,6 +408,55 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
   padding: 4px 10px;
 }
 
+/* ─── LOCKED / HIDDEN PRODUCT TREATMENT ─── */
+/* Used for ZDRY essentials before reveal - cards read as obscured, not empty. */
+.locked-img {
+  position: relative;
+  background:
+    radial-gradient(ellipse at 50% 40%, rgba(92,64,51,0.08) 0%, transparent 60%),
+    repeating-linear-gradient(
+      45deg,
+      rgba(255,255,255,0.012) 0px,
+      rgba(255,255,255,0.012) 1px,
+      transparent 1px,
+      transparent 8px
+    ),
+    var(--grey-dark);
+}
+
+.locked-img::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 28px;
+  height: 32px;
+  transform: translate(-50%, -50%);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%235c4033' stroke-width='1.2'><rect x='4' y='10' width='16' height='11' rx='1.5'/><path d='M8 10V7a4 4 0 0 1 8 0v3'/></svg>");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  opacity: 0.55;
+}
+
+.locked-card { cursor: default; }
+.locked-card:hover .locked-img { transform: none; }
+.locked-card .product-card-price { color: var(--warm-grey); }
+
+/* Locked treatment on the single-product page placeholder */
+.locked-image-item {
+  background:
+    radial-gradient(ellipse at 50% 40%, rgba(92,64,51,0.08) 0%, transparent 60%),
+    repeating-linear-gradient(
+      45deg,
+      rgba(255,255,255,0.012) 0px,
+      rgba(255,255,255,0.012) 1px,
+      transparent 1px,
+      transparent 8px
+    ),
+    var(--grey-dark) !important;
+}
+
 /* ─── FOOTER ─── */
 .footer {
   padding: 60px 40px 40px;
